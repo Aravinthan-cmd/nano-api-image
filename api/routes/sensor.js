@@ -1,5 +1,5 @@
 import express from "express";
-import { userData, userRegister,InsertData,getSensor,getallSensor,getNano,getNanoGraph,getLast,getImage,getImage2,upload, upload2,} from "../controllers/sensor.js";
+import { userData, userRegister,InsertData,getSensor,getallSensor,getNano,getNanoGraph,getLast,getImage,getImage2,upload, upload2, getTemperature} from "../controllers/sensor.js";
 
 const router = express.Router();
 
@@ -29,5 +29,9 @@ router.post('/upload2',upload2);
 router.get('/getImage', getImage);
 //image-get2
 router.get('/getImage2', getImage2);
+//Temperature
+router.get('/getTemperature',getTemperature);
 
 export default router;
+
+

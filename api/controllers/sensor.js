@@ -150,7 +150,7 @@ export const getNano = async (req, res) => {
 export const getNanoGraph = async (req, res) => {
   let token = await getAuthToken(credentials);
   let { graphName, startDate, endDate } = req.query;
-  const currentDate = Math.floor(Date.now() / 1000);
+const currentDate = Math.floor(Date.now() / 1000);
 const thirtyDaysInSeconds = 30 * 86400;
 const thirtyDaysAgo = currentDate - thirtyDaysInSeconds;
 
@@ -184,13 +184,19 @@ console.log("30 Days Ago (Epoch):", thirtyDaysAgo);
         },
       }
     );
-    res.status(200).json(response.data);
+    const responseData = response.data;
+    const slicedData = [{
+      data: responseData[0].data.slice(0, 30),
+      timestamp: responseData[0].timestamp.slice(0, 30),
+      tagId: responseData.tagId
+    }];
+    res.status(200).json(slicedData);
   } catch (error) {
     res.status(500).json(error);
   }
 };
 
-// //Image
+//Image
 // const Storage = multer.diskStorage({
 //   destination: "/Users/naveenkumar/Desktop/test/nano-image/src/upload",
 //   filename: (req, file, cb) => {
@@ -305,5 +311,15 @@ export const upload2 = async (req, res) => {
   } catch (err) {
     console.error('Error uploading image:', err);
     res.status(500).json({ error: 'Internal Server Error' });
+  }
+};
+
+//getTemperatureImage
+export const getTemperature = async (req, res) => {
+  try {
+    const getimage = await Image.find().sort({ updatedAt: -1 }).limit(10);
+    res.status(200).json(getimage);
+  } catch (error) {
+    res.status(500).json(error);
   }
 };
